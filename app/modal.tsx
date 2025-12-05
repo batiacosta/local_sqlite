@@ -1,20 +1,33 @@
 import { StatusBar } from "expo-status-bar";
-import { Platform, StyleSheet } from "react-native";
+import { router, Stack } from "expo-router";
+import { Platform, StyleSheet, TouchableOpacity } from "react-native";
 import { Text, View } from "@/components/Themed";
+import {
+  SafeAreaFrameContext,
+  SafeAreaView,
+} from "react-native-safe-area-context";
 
 export default function Modal() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
+      <Stack.Screen options={{ title: "Item Modal" }} />
       <Text style={styles.title}>Modal</Text>
       <View
-        style={styles.separator}
+        style={{ flex: 1, flexDirection: "row", gap: 20 }}
         lightColor="#eee"
         darkColor="rgba(255,255,255,0.1)"
-      />
+      >
+        <TouchableOpacity onPress={() => router.back()}>
+          <Text>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => router.back()}>
+          <Text>Save</Text>
+        </TouchableOpacity>
+      </View>
 
       {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
-    </View>
+    </SafeAreaView>
   );
 }
 
