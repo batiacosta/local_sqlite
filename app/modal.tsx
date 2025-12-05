@@ -12,12 +12,22 @@ import {
   SafeAreaView,
 } from "react-native-safe-area-context";
 import { useState } from "react";
+import { useSQLiteContext } from "expo-sqlite";
 
 export default function Modal() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const database = useSQLiteContext();
 
   const handleSave = async () => {
+    try {
+      await database.runAsync(
+        "INSERT INTO users (name, email) VALUES (?, ?);",
+        [name, email],
+      );
+    } catch (error) {
+      console.error(error);
+    }
     router.back();
   };
 
