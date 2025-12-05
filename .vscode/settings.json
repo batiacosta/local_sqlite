@@ -4,4 +4,7 @@
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
   }
+  ,
+  "files.exclude": {},
+  "explorer.exclude": {}
 }
