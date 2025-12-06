@@ -1,8 +1,8 @@
 import { Text, View } from "@/components/Themed";
-import { router, Stack } from "expo-router";
+import { router, Stack, useLocalSearchParams } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { StatusBar } from "expo-status-bar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Platform,
   StyleSheet,
@@ -13,10 +13,43 @@ import {
   SafeAreaView
 } from "react-native-safe-area-context";
 
+type UserType = {
+  id: number;
+  name: string;
+  email: string;
+};
+
 export default function Modal() {
+  const {id} = useLocalSearchParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const database = useSQLiteContext();
+
+  const [editmode, setEditmode] = useState(false);
+
+  useEffect(() => {
+    if (id) {
+      setEditmode(true);
+      // Load the user data for the given id
+      
+      loadData();
+    }
+  }, [id]);
+
+  const loadData = async () => {
+        try {
+          const result = await database.getFirstAsync<{name: string; email: string}>(
+            "SELECT name, email FROM users WHERE id = ?;",
+            [parseInt(id as string)],
+          );
+          if (result) {
+            setName(result.name);
+            setEmail(result.email);
+          }
+        } catch (error) {
+          console.error(error);
+        }
+    };
 
   const handleSave = async () => {
     try {
@@ -29,6 +62,17 @@ export default function Modal() {
     }
     router.back();
   };
+
+  const handleUpdate = async () => {
+    try {
+      await database.runAsync(
+        "UPDATE users SET name = ?, email = ? WHERE id = ?;",
+        [name, email, parseInt(id as string)],
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -66,10 +110,10 @@ export default function Modal() {
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={handleSave}
+          onPress={async () => { editmode ? await handleUpdate() : await handleSave(); router.back(); }}
           style={[styles.button, { backgroundColor: "blue" }]}
         >
-          <Text style={styles.buttonText}>Save</Text>
+          <Text style={styles.buttonText}>{editmode ? "Update" : "Save"}</Text>
         </TouchableOpacity>
       </View>
       {/* Use a light status bar on iOS to account for the black space above the modal */}
