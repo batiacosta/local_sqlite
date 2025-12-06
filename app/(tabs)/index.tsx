@@ -33,6 +33,15 @@ export default function TabOneScreen() {
     );
   };
 
+  const handleDelete = async (id: number) => {
+    try {
+      await database.runAsync("DELETE FROM users WHERE id = ?;", [id]);
+      loadData();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useFocusEffect(
     useCallback(() => {
       loadData();
@@ -60,14 +69,24 @@ export default function TabOneScreen() {
                     <Text>{item.name}</Text>
                     <Text>{item.email}</Text>
                   </View>
-                  <TouchableOpacity
-                    onPress={() => {
-                      router.push(`/modal?id=${item.id}`);
-                    }}
-                    style={styles.button}
-                  >
-                    <Text style={styles.buttonText}>Edit</Text>
-                  </TouchableOpacity>
+                  <View style={{ flexDirection: "row", gap: 10 }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        router.push(`/modal?id=${item.id}`);
+                      }}
+                      style={styles.button}
+                    >
+                      <Text style={styles.buttonText}>Edit</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        handleDelete(item.id);
+                      }}
+                      style={[styles.button, { backgroundColor: "red" }]}
+                    >
+                      <Text style={styles.buttonText}>Delete</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             );
