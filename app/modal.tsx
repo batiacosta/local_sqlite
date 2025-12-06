@@ -60,7 +60,11 @@ export default function Modal() {
     } catch (error) {
       console.error(error);
     }
-    router.back();
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace("/(tabs)");
+    }
   };
 
   const handleUpdate = async () => {
@@ -72,7 +76,12 @@ export default function Modal() {
     } catch (error) {
       console.error(error);
     }
-  }
+    if (router.canGoBack()) {
+      router.back();
+    } else {
+      router.replace("/(tabs)");
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -104,13 +113,19 @@ export default function Modal() {
         darkColor="rgba(255,255,255,0.1)"
       >
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={() => {
+            if (router.canGoBack()) {
+              router.back();
+            } else {
+              router.replace("/(tabs)");
+            }
+          }}
           style={[styles.button, { backgroundColor: "red" }]}
         >
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={async () => { editmode ? await handleUpdate() : await handleSave(); router.back(); }}
+          onPress={async () => { editmode ? await handleUpdate() : await handleSave(); }}
           style={[styles.button, { backgroundColor: "blue" }]}
         >
           <Text style={styles.buttonText}>{editmode ? "Update" : "Save"}</Text>
