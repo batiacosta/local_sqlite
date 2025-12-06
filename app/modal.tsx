@@ -13,12 +13,6 @@ import {
   SafeAreaView
 } from "react-native-safe-area-context";
 
-type UserType = {
-  id: number;
-  name: string;
-  email: string;
-};
-
 export default function Modal() {
   const {id} = useLocalSearchParams();
   const [name, setName] = useState("");
@@ -27,15 +21,15 @@ export default function Modal() {
 
   const [editmode, setEditmode] = useState(false);
 
+  // Checking if we are in edit mode or not
   useEffect(() => {
     if (id) {
       setEditmode(true);
-      // Load the user data for the given id
-      
       loadData();
     }
   }, [id]);
 
+  // Load data for editing
   const loadData = async () => {
         try {
           const result = await database.getFirstAsync<{name: string; email: string}>(
@@ -51,6 +45,7 @@ export default function Modal() {
         }
     };
 
+    // Save new entry
   const handleSave = async () => {
     try {
       await database.runAsync(
@@ -67,6 +62,7 @@ export default function Modal() {
     }
   };
 
+  // Update existing entry
   const handleUpdate = async () => {
     try {
       await database.runAsync(
@@ -131,7 +127,6 @@ export default function Modal() {
           <Text style={styles.buttonText}>{editmode ? "Update" : "Save"}</Text>
         </TouchableOpacity>
       </View>
-      {/* Use a light status bar on iOS to account for the black space above the modal */}
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </SafeAreaView>
   );
