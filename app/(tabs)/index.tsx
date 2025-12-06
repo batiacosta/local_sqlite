@@ -28,7 +28,7 @@ export default function TabOneScreen() {
         onPress={() => router.push("/modal")}
         style={{ marginRight: 10 }}
       >
-        <FontAwesome name="plus-circle" size={24} color="blue" />
+        <FontAwesome name="plus-circle" size={28} color="blue" />
       </TouchableOpacity>
     );
   };
@@ -48,22 +48,26 @@ export default function TabOneScreen() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => {
             return (
-              <View style={{padding: 10,}}>
-                <View style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}>
-                  <View >
-                    <Text >{item.name}</Text>
-                    <Text >{item.email}</Text>
+              <View style={{ padding: 10 }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <View>
+                    <Text>{item.name}</Text>
+                    <Text>{item.email}</Text>
                   </View>
                   <TouchableOpacity
-                    onPress={ () => {
-                      router.push(`/modal?id=${item.id}`)
+                    onPress={() => {
+                      router.push(`/modal?id=${item.id}`);
                     }}
-                    style={styles.button}>
-                      <Text style={styles.buttonText}>Edit</Text>
-                    </TouchableOpacity>
+                    style={styles.button}
+                  >
+                    <Text style={styles.buttonText}>Edit</Text>
+                  </TouchableOpacity>
                 </View>
               </View>
             );
@@ -92,5 +96,5 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     fontSize: 12,
-  }
+  },
 });
