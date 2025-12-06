@@ -1,11 +1,10 @@
-import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
-import { router, Stack } from "expo-router";
 import { Text, View } from "@/components/Themed";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { useFocusEffect } from "@react-navigation/native";
+import { router, Stack } from "expo-router";
 import { useSQLiteContext } from "expo-sqlite";
 import { useCallback, useState } from "react";
-import { useFocusEffect } from "@react-navigation/native";
-import { useComposedEventHandler } from "react-native-reanimated";
+import { FlatList, StyleSheet, TouchableOpacity } from "react-native";
 
 type UserType = {
   id: number;
@@ -46,12 +45,26 @@ export default function TabOneScreen() {
       <View>
         <FlatList
           data={data}
+          keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => {
             return (
-              <View>
-                <Text> {item.name}</Text>
-                <Text> {item.email}</Text>
-                <Text> {item.id}</Text>
+              <View style={{padding: 10,}}>
+                <View style={{
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                }}>
+                  <View >
+                    <Text >{item.name}</Text>
+                    <Text >{item.email}</Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={ () => {
+                      router.push(`/modal?id=${item.id}`)
+                    }}
+                    style={styles.button}>
+                      <Text style={styles.buttonText}>Edit</Text>
+                    </TouchableOpacity>
+                </View>
               </View>
             );
           }}
@@ -67,13 +80,17 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  title: {
-    fontSize: 20,
+  button: {
+    backgroundColor: "blue",
+    padding: 5,
+    borderRadius: 5,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  buttonText: {
+    color: "white",
     fontWeight: "bold",
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: "80%",
-  },
+    fontSize: 12,
+  }
 });

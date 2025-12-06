@@ -1,18 +1,17 @@
-import { StatusBar } from "expo-status-bar";
+import { Text, View } from "@/components/Themed";
 import { router, Stack } from "expo-router";
+import { useSQLiteContext } from "expo-sqlite";
+import { StatusBar } from "expo-status-bar";
+import { useState } from "react";
 import {
   Platform,
   StyleSheet,
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import { Text, View } from "@/components/Themed";
 import {
-  SafeAreaFrameContext,
-  SafeAreaView,
+  SafeAreaView
 } from "react-native-safe-area-context";
-import { useState } from "react";
-import { useSQLiteContext } from "expo-sqlite";
 
 export default function Modal() {
   const [name, setName] = useState("");
@@ -67,7 +66,7 @@ export default function Modal() {
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity
-          onPress={() => router.back()}
+          onPress={handleSave}
           style={[styles.button, { backgroundColor: "blue" }]}
         >
           <Text style={styles.buttonText}>Save</Text>
