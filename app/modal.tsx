@@ -86,6 +86,9 @@ export default function Modal() {
         style={{
           gap: 20,
           marginVertical: 20,
+          backgroundColor: "#EEE6D9",
+          padding: 20,
+          borderRadius: 10,
         }}
       >
         <TextInput
@@ -101,32 +104,31 @@ export default function Modal() {
           onChangeText={setEmail}
           style={styles.textInput}
         />
+        <View
+          style={{ flexDirection: "row", gap: 20, justifyContent: "center", backgroundColor: "#EEE6D9" }}
+        >
+          <TouchableOpacity
+            onPress={() => {
+              if (router.canGoBack()) {
+                router.back();
+              } else {
+                router.replace("/(tabs)");
+              }
+            }}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>Cancel</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={async () => { editmode ? await handleUpdate() : await handleSave(); }}
+            style={styles.button}
+          >
+            <Text style={styles.buttonText}>{editmode ? "Update" : "Save"}</Text>
+          </TouchableOpacity>
+        </View>
       </View>
 
-      <View
-        style={{ flex: 1, flexDirection: "row", gap: 20 }}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
-      >
-        <TouchableOpacity
-          onPress={() => {
-            if (router.canGoBack()) {
-              router.back();
-            } else {
-              router.replace("/(tabs)");
-            }
-          }}
-          style={[styles.button, { backgroundColor: "red" }]}
-        >
-          <Text style={styles.buttonText}>Cancel</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={async () => { editmode ? await handleUpdate() : await handleSave(); }}
-          style={[styles.button, { backgroundColor: "blue" }]}
-        >
-          <Text style={styles.buttonText}>{editmode ? "Update" : "Save"}</Text>
-        </TouchableOpacity>
-      </View>
+      <View style={{ flex: 1 }} />
       <StatusBar style={Platform.OS === "ios" ? "light" : "auto"} />
     </SafeAreaView>
   );
@@ -136,13 +138,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
+    backgroundColor: "#EEE6D9",
   },
   textInput: {
-    borderWidth: 1,
+    borderWidth: 2,
     padding: 10,
     width: 300,
     borderRadius: 5,
-    borderColor: "slategray",
+    borderColor: "#841617",
+    backgroundColor: "white",
+    fontSize: 16,
   },
   button: {
     height: 40,
@@ -150,9 +155,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
+    backgroundColor: "#841617",
   },
   buttonText: {
     fontWeight: "bold",
-    color: "white",
+    color: "#EEE6D9",
   },
 });

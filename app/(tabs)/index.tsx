@@ -28,7 +28,7 @@ export default function TabOneScreen() {
         onPress={() => router.push("/modal")}
         style={{ marginRight: 10 }}
       >
-        <FontAwesome name="plus-circle" size={28} color="blue" />
+        <FontAwesome name="plus-circle" size={28} color="#841617" />
       </TouchableOpacity>
     );
   };
@@ -49,32 +49,33 @@ export default function TabOneScreen() {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: "#EEE6D9" }]}>
       <Stack.Screen options={{ headerRight }} />
-      <View>
+      <View style={{backgroundColor: "#EEE6D9", width: "100%", flex: 1, padding: 10 }}>
         <FlatList
           data={data}
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => {
             return (
-              <View style={{ padding: 10 }}>
+              <View style={{ padding: 10 , backgroundColor: "#EEE6D9"}}>
                 <View
                   style={{
                     flexDirection: "row",
                     justifyContent: "space-between",
                     width: "100%",
+                    backgroundColor: "#EEE6D9",
                   }}
                 >
-                  <View>
+                  <View style={{ backgroundColor: "#EEE6D9" }}> 
                     <Text>{item.name}</Text>
                     <Text>{item.email}</Text>
                   </View>
-                  <View style={{ flexDirection: "row", gap: 10 }}>
+                  <View style={{ flexDirection: "row", gap: 10, backgroundColor: "#EEE6D9" }}>
                     <TouchableOpacity
                       onPress={() => {
                         router.push(`/modal?id=${item.id}`);
                       }}
-                      style={styles.button}
+                      style={styles.editButton}
                     >
                       <Text style={styles.buttonText}>Edit</Text>
                     </TouchableOpacity>
@@ -82,9 +83,9 @@ export default function TabOneScreen() {
                       onPress={() => {
                         handleDelete(item.id);
                       }}
-                      style={[styles.button, { backgroundColor: "red" }]}
+                      style={styles.deleteButton}
                     >
-                      <Text style={styles.buttonText}>Delete</Text>
+                      <Text style={styles.deleteButtonText}>Delete</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -102,17 +103,41 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: "#EEE6D9",
   },
   button: {
-    backgroundColor: "blue",
+    backgroundColor: "#841617",
     padding: 5,
     borderRadius: 5,
     height: 30,
     alignItems: "center",
     justifyContent: "center",
   },
+  editButton: {
+    backgroundColor: "#841617",
+    padding: 5,
+    borderRadius: 5,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  deleteButton: {
+    backgroundColor: "#EEE6D9",
+    padding: 5,
+    borderRadius: 5,
+    height: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "#841617",
+  },
   buttonText: {
-    color: "white",
+    color: "#EEE6D9",
+    fontWeight: "bold",
+    fontSize: 12,
+  },
+  deleteButtonText: {
+    color: "#841617",
     fontWeight: "bold",
     fontSize: 12,
   },
